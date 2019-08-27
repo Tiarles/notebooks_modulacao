@@ -2,6 +2,7 @@
 alimentados de tensão
 
 **Prof º** Humberto Pinheiro
+
 **Autor e gerenciador do repositório:** Tiarles Guterres 
 ([github.com/Tiarles](github.com/Tiarles))
 
@@ -19,6 +20,10 @@ O notebook (**filter design-rev02.ipynb**) contém alguns comandos mostrados
 em aula pelo profº Humberto e um pdf 
 (**180724 - Modulation rev10_april_23_2019.pdf**) que fala sobre o projeto do 
 filtro mostrado no notebook.
+
+3. Na pasta ``NPC 3-level Material`` encontra-se dois notebooks com as 
+perdas de condução e comutação para um **NPC 3 níveis**, que até o momento está
+em fase de aperfeiçoamento.
 
 **Como faz para utilizar os arquivos no repositório?** Você pode baixar todos 
 os arquivos desta página, clicando em ``Clone or download`` e após em 
