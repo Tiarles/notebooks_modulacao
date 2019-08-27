@@ -73,7 +73,7 @@ mpld3.enable_notebook()
 ```
 
 
-![png](output_7_0.png)
+![png](images\output_7_0.png)
 
 
 
