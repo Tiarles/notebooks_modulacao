@@ -24,7 +24,7 @@ filtro mostrado no notebook.
 os arquivos desta página, clicando em ``Clone or download`` e após em 
 ``Download ZIP``.
 
-![](README-images/download_shortcut.jpg)
+![](README-images/download_shortcut.JPG)
 
 Os slides abaixo mostram o funcionamento dos arquivos presentes na pasta
 ``Half Bridge Material``:
