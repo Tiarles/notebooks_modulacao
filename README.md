@@ -3,7 +3,7 @@ alimentados de tensão
 
 **Prof º** Humberto Pinheiro
 **Autor e gerenciador do repositório:** Tiarles Guterres 
-(![github.com/tiarles](github.com/tiarles))
+([github.com/tiarles](github.com/tiarles))
 
 Até o dia 27 de agosto de 2019 o material do repositório se encontra dividido 
 da seguinte forma:
@@ -24,12 +24,10 @@ filtro mostrado no notebook.
 os arquivos desta página, clicando em ``Clone or download`` e após em 
 ``Download ZIP``.
 
-![](README-images\download_shortcut.jpg)
+![](README-images/download_shortcut.jpg)
 
 Os slides abaixo mostram o funcionamento dos arquivos presentes na pasta
-``Half Bridge Material``.
-
-
+``Half Bridge Material``:
 
 ![](README-images/1.jpg)
 ![](README-images/2.jpg)
