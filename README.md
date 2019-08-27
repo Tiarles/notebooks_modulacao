@@ -3,7 +3,7 @@ alimentados de tensão
 
 **Prof º** Humberto Pinheiro
 **Autor e gerenciador do repositório:** Tiarles Guterres 
-([github.com/tiarles](github.com/tiarles))
+([github.com/Tiarles](github.com/Tiarles))
 
 Até o dia 27 de agosto de 2019 o material do repositório se encontra dividido 
 da seguinte forma:
