@@ -14,6 +14,23 @@ python: O módulo (**halfBridgeModule**) possui algumas funções como a
 que são utilizadas nos notebooks **conductionLossesModulation.ipynb** e 
 **switchingLossesModulation**.
 
+2. Na pasta ``Filter Design Material`` encontra-se um notebook e um pdf:
+O notebook (**filter design-rev02.ipynb**) contém alguns comandos mostrados 
+em aula pelo profº Humberto e um pdf 
+(**180724 - Modulation rev10_april_23_2019.pdf**) que fala sobre o projeto do 
+filtro mostrado no notebook.
+
+**Como faz para utilizar os arquivos no repositório?** Você pode baixar todos 
+os arquivos desta página, clicando em ``Clone or download`` e após em 
+``Download ZIP``.
+
+![](README-images\download_shortcut.jpg)
+
+Os slides abaixo mostram o funcionamento dos arquivos presentes na pasta
+``Half Bridge Material``.
+
+
+
 ![](README-images/1.jpg)
 ![](README-images/2.jpg)
 ![](README-images/3.jpg)
