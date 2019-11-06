@@ -1,0 +1,22 @@
+* PSpice Model Editor - Version 9.2.1
+
+*$
+*DEVICE=IXGT40N60C2,NIGBT
+
+* IXGT40N60C2 NIGBT model
+* updated using Model Editor release 9.2.1 on 10/31/03 at 12:43
+* The Model Editor is a PSpice product hmt.
+.MODEL IXGT40N60C2 NIGBT
++ TAU=50.100E-9
++ KP=14.128
++ AREA=37.500E-6
++ AGD=15.000E-6
++ VT=4.2961
++ MUN=15.550E3
++ MUP=100
++ BVF=4.5000
++ KF=.5005
++ CGS=10.121E-9
++ COXD=20.188E-9
++ VTD=-5
+*$
