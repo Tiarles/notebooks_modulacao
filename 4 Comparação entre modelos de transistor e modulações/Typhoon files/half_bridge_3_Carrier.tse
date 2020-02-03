@@ -1,0 +1,320 @@
+version = 4.2
+
+//
+// Saved by sw version: 2019.2
+// Save timestamp: 20-Dec-2019 @ 01:46:26 PM
+//
+
+model "half_bridge_3_Carrier" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+    }
+
+    component Subsystem Root {
+        component "core/Three Phase Inverter" "Three Phase Inverter1" {
+            ctrl_src = "Internal modulator"
+        }
+        [
+            position = 8304, 8056
+            size = 127, 256
+        ]
+
+        component src_sine Va {
+            amplitude = "ma"
+            frequency = "60"
+        }
+        [
+            position = 7992, 7752
+        ]
+
+        component src_sine Vb {
+            amplitude = "ma"
+            frequency = "60"
+            phase = "120"
+        }
+        [
+            position = 7992, 7808
+        ]
+
+        component src_sine Vc {
+            amplitude = "ma"
+            frequency = "60"
+            phase = "240"
+        }
+        [
+            position = 7992, 7864
+        ]
+
+        component src_voltage Vs1 {
+            init_const_value = "50"
+        }
+        [
+            position = 8144, 8056
+            rotation = right
+        ]
+
+        component "core/Grid Simulator" "Grid Simulator1" {
+            inductance_grid_simulator = "3e-3"
+        }
+        [
+            position = 8656, 8056
+            size = 120, 256
+        ]
+
+        component "core/Voltage Measurement" Vab {
+        }
+        [
+            position = 8544, 8008
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Voltage Measurement" Vbc {
+        }
+        [
+            position = 8544, 8104
+            rotation = right
+            size = 64, 32
+        ]
+
+        component src_constant Constant1 {
+        }
+        [
+            position = 8240, 7888
+        ]
+
+        component "core/Current Measurement" Ia {
+        }
+        [
+            position = 8456, 7960
+            size = 64, 32
+        ]
+
+        component "core/Current Measurement" Ic {
+        }
+        [
+            position = 8464, 8152
+            size = 64, 32
+        ]
+
+        component "core/Current Measurement" Ib {
+        }
+        [
+            position = 8464, 8056
+            size = 64, 32
+        ]
+
+        junction Junction1 pe
+        [
+            position = 8544, 7960
+        ]
+
+        junction Junction3 pe
+        [
+            position = 8544, 8056
+        ]
+
+        junction Junction4 pe
+        [
+            position = 8544, 8152
+        ]
+
+        junction Junction5 pe
+        [
+            position = 8544, 8056
+        ]
+
+        connect Vs1.p_node "Three Phase Inverter1.pos_out" as Connection8
+        connect "Three Phase Inverter1.neg_out" Vs1.n_node as Connection9
+        connect Junction1 "Grid Simulator1.Phase A" as Connection14
+        connect Vab.p_node Junction1 as Connection15
+        connect Vab.n_node Junction3 as Connection19
+        connect Vbc.p_node Junction3 as Connection21
+        connect Junction4 "Grid Simulator1.Phase C" as Connection23
+        connect Vbc.n_node Junction4 as Connection24
+        connect Constant1.out "Three Phase Inverter1.En" as Connection25
+        connect Va.out "Three Phase Inverter1.InA" as Connection26
+        connect Vb.out "Three Phase Inverter1.InB" as Connection27
+        connect Vc.out "Three Phase Inverter1.InC" as Connection28
+        connect "Three Phase Inverter1.a_in" Ia.p_node as Connection29
+        connect Ia.n_node Junction1 as Connection30
+        connect "Three Phase Inverter1.c_in" Ic.p_node as Connection31
+        connect Ic.n_node Junction4 as Connection32
+        connect "Three Phase Inverter1.b_in" Ib.p_node as Connection34
+        connect "Grid Simulator1.Phase B" Junction5 as Connection35
+        connect Junction5 Junction3 as Connection36
+        [
+            breakpoints = 8544, 8056
+        ]
+        connect Ib.n_node Junction5 as Connection37
+        [
+            breakpoints = 8536, 8056
+        ]
+    }
+
+    default {
+        src_constant {
+            value = "1"
+            signal_type = "real"
+            execution_rate = "100e-6"
+        }
+
+        src_sine {
+            amplitude = "1"
+            dc_offset = "0"
+            frequency = "50"
+            phase = "0"
+            execution_rate = "100e-6"
+        }
+
+        src_voltage {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "core/Voltage Measurement" {
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Current Measurement" {
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Three Phase Inverter" {
+            ctrl_src = "Digital input per switch"
+            op_mode = "Fixed carrier frequency"
+            carrier_freq = "10000.0"
+            carr_ph_offset = "0.0"
+            d_time = "5e-6"
+            ref_sig_min_max = "[-1.0, 1.0]"
+            execution_rate = "inherit"
+            Sa_top = "1"
+            Sa_top_logic = "active high"
+            Sa_bot = "2"
+            Sa_bot_logic = "active high"
+            Sb_top = "3"
+            Sb_top_logic = "active high"
+            Sb_bot = "4"
+            Sb_bot_logic = "active high"
+            Sc_top = "5"
+            Sc_top_logic = "active high"
+            Sc_bot = "6"
+            Sc_bot_logic = "active high"
+            delay_enabled = "False"
+            fixed_delay = "1e-6"
+            var_delay_lut = "[-10.0, 1e-6, 10.0, 1e-6]"
+            preview_var_delay = "Preview"
+            Sa_top_I = "False"
+            Sa_bot_I = "False"
+            Sb_top_I = "False"
+            Sb_bot_I = "False"
+            Sc_top_I = "False"
+            Sc_bot_I = "False"
+            losses_estimation = "False"
+            Xml_losses = "Import from XML"
+            Vce = "1.3"
+            Rce = "0"
+            Vd = "1.2"
+            Rd = "0"
+            i_sw = "[0.0, 6.0, 12.0, 18.0, 24.0]"
+            v_sw = "[0.0, 600.0]"
+            temp_sw = "[25.0, 50.0, 75.0, 100.0, 125.0]"
+            et_on_table_out = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*3.8e-3, 0.4*3.8e-3, 0.8*3.8e-3, 0.68*3.8e-3, 0.9*3.8e-3], [0.65*3.8e-3, 0.9*3.8e-3, 1.2*3.8e-3, 1.5*3.8e-3, 1.7*3.8e-3], [0.9*3.8e-3, 1.3*3.8e-3, 1.7*3.8e-3, 1.9*3.8e-3, 2.25*3.8e-3], [1.1*3.8e-3, 1.7*3.8e-3, 2.1*3.8e-3, 2.3*3.8e-3, 2.5*3.8e-3]]"
+            et_off_table_out = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.1e-3, 0.4*2.1e-3, 0.8*2.1e-3, 0.68*2.1e-3, 0.9*2.1e-3], [0.65*2.1e-3, 0.9*2.1e-3, 1.2*2.1e-3, 1.5*2.1e-3, 1.7*2.1e-3], [0.9*2.1e-3, 1.3*2.1e-3, 1.7*2.1e-3, 1.9*2.1e-3, 2.25*2.1e-3], [1.1*2.1e-3, 1.7*2.1e-3, 2.1*2.1e-3, 2.3*2.1e-3, 2.5*2.1e-3]]"
+            ed_off_table_out = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.2e-3, 0.4*2.2e-3, 0.8*2.2e-3, 0.68*2.2e-3, 0.9*2.2e-3], [0.65*2.2e-3, 0.9*2.2e-3, 1.2*2.2e-3, 1.5*2.2e-3, 1.7*2.2e-3], [0.9*2.2e-3, 1.3*2.2e-3, 1.7*2.2e-3, 1.9*2.2e-3, 2.25*2.2e-3], [1.1*2.2e-3, 1.7*2.2e-3, 2.1*2.2e-3, 2.3*2.2e-3, 2.5*2.2e-3]]"
+            loss_exec_rate = "100e-6"
+            show_cnt_out = "False"
+            show_monitoring = "false"
+            _control_property = "all high"
+            dtv_flag_en = "True"
+        }
+
+        "core/Grid Simulator" {
+            resistance_grid_simulator = "1.0"
+            inductance_grid_simulator = "1e-3"
+        }
+    }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        ma = .8
+    ENDCODE
+}

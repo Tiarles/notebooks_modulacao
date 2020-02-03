@@ -1,0 +1,768 @@
+version = 4.2
+
+//
+// Saved by sw version: 2019.4 SP1
+// Save timestamp: 02-Feb-2020 @ 11:01:04 PM
+//
+
+model "NPC 3-level_v2" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+    }
+
+    component Subsystem Root {
+        component src_voltage Vs3 {
+            init_const_value = "25"
+        }
+        [
+            position = 8424, 8112
+            rotation = right
+        ]
+
+        component gen_probe Probe10 {
+        }
+        [
+            position = 8000, 8704
+        ]
+
+        component src_constant Constant3 {
+        }
+        [
+            position = 8640, 8720
+        ]
+
+        component gen_probe Probe7 {
+        }
+        [
+            position = 8056, 8784
+        ]
+
+        component gen_probe Probe9 {
+        }
+        [
+            position = 8000, 8648
+        ]
+
+        component src_sine Vc {
+            frequency = "60"
+            phase = "120"
+        }
+        [
+            position = 7728, 8512
+        ]
+
+        component gen_probe Probe4 {
+        }
+        [
+            position = 8144, 8632
+        ]
+
+        component gen_probe Sextant {
+        }
+        [
+            position = 8240, 8560
+        ]
+
+        component gen_probe Probe8 {
+        }
+        [
+            position = 8000, 8592
+        ]
+
+        component "core/NPC Leg" "NPC Leg2" {
+            ctrl_src = "Internal modulator"
+        }
+        [
+            position = 8704, 8472
+            size = 127, 256
+        ]
+
+        component gen_c_function "C function1" {
+            global_variables = "real sextant;real r1;real r2;real r3;real R1;real R2;real R3;real V_alfa1;real V_beta1;real sqrt2;real sqrt3;real V_alfa;real V_beta;real Va2;real Vb2;real Vc2;real theta;real sector;real dt0;real dt1;real dt2;real dt3;real dt4;real dt5;real dt6;real dt7;real dt8;real t_COMP1;real t_COMP2;real t_COMP3;real t_COMP4;real t_COMP5;real t_COMP6;real dt9;real COMP1;real COMP2;real COMP3;real COMP4;real COMP5;real COMP6;"
+            in_terminal_dimensions = "inherit;inherit;inherit;inherit"
+            in_terminal_dimensions_str = "Va_ref inherit;Vb_ref inherit;Vc_ref inherit;ma inherit"
+            in_terminal_labels = "[(\'Va_ref\', False), (\'Vb_ref\', False), (\'Vc_ref\', False), (\'ma\', False)]"
+            in_terminal_properties = "real Va_ref;inherit Vb_ref;inherit Vc_ref;inherit ma;"
+            init_fnc = "/*Begin code section*/
+sqrt2 = sqrt(2);
+sqrt3 = sqrt(3);
+/*End code section*/"
+            no_feed_inputs = "[\'\']"
+            no_feed_outputs = "[\'\']"
+            out_terminal_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit;inherit"
+            out_terminal_dimensions_str = "vag1 inherit;vag2 inherit;vbg1 inherit;vbg2 inherit;vcg1 inherit;vcg2 inherit;sextant_o inherit;sector_o inherit;V_alfa_o inherit;V_beta_o inherit;V_alfa1_o inherit;V_beta1_o inherit;theta_o inherit;R1_o inherit;R2_o inherit;R3_o inherit"
+            out_terminal_labels = "[(\'vag1\', False), (\'vag2\', False), (\'vbg1\', False), (\'vbg2\', False), (\'vcg1\', False), (\'vcg2\', False), (\'sextant_o\', True), (\'sector_o\', True), (\'V_alfa_o\', True), (\'V_beta_o\', True), (\'V_alfa1_o\', True), (\'V_beta1_o\', True), (\'theta_o\', True), (\'R1_o\', True), (\'R2_o\', True), (\'R3_o\', False)]"
+            out_terminal_properties = "real vag1;real vag2;real vbg1;real vbg2;inherit vcg1;real vcg2;inherit sextant_o;inherit sector_o;inherit V_alfa_o;inherit V_beta_o;inherit V_alfa1_o;inherit V_beta1_o;inherit theta_o;inherit R1_o;inherit R2_o;inherit R3_o;"
+            output_fnc = "/*Begin code section*/
+vag1 = COMP1;
+vag2 = COMP2;
+
+vbg1 = COMP3;
+vbg2 = COMP4;
+
+vcg1 = COMP5;
+vcg2 = COMP6;
+
+sextant_o = sextant;
+sector_o = sector;
+
+V_alfa_o = V_alfa;
+V_beta_o = V_beta;
+V_alfa1_o = V_alfa1;
+V_beta1_o = V_beta1;
+
+theta_o = theta;
+
+R1_o = R1;
+R2_o = R2;
+R3_o = R3;
+/*End code section*/"
+            update_fnc = "/*Begin code section*/
+Va2 = ma*Va_ref;
+Vb2 = ma*Vb_ref;
+Vc2 = ma*Vc_ref;
+
+V_alfa = 2./3.*Va2-1./3.*Vb2-1./3.*Vc2;
+V_beta = sqrt3/3.*Vb2 - sqrt3/3.*Vc2;
+
+r1 = V_beta;
+r2 = V_beta - sqrt3*V_alfa;
+r3 =  V_beta + sqrt3*V_alfa;
+
+if(r1 > 0 && r2 < 0) sextant = 1;
+else if(r1 > 0 && r2 > 0 && r3 > 0) sextant = 2;
+else if(r1 > 0 && r3 < 0) sextant = 3;
+else if(r1 < 0 && r2 > 0) sextant = 4;
+else if(r1 < 0 && r3 < 0 && r2 < 0) sextant = 5;
+else sextant = 6;
+
+theta = M_PI/3 * (sextant - 1);
+
+V_alfa1 = V_alfa*cos(theta) + V_beta*sin(theta);
+V_beta1 = -V_alfa*sin(theta) + V_beta*cos(theta);
+
+R1 = V_beta1 - 3*sqrt2/8;
+R2 = V_beta1 - sqrt3*V_alfa1 + 3*sqrt2/4;
+R3 = V_beta1 + sqrt3*V_alfa1 - 3*sqrt2/4;
+
+if(R1>=0)
+    sector = 9;
+else 
+{
+    if (R2>=0)
+    {
+        if(R3 >= 0)
+            sector = 8;
+        else
+            sector = 1;
+        }
+    else
+    sector = 7;
+}
+
+if(sector == 1){ //Sector 1
+    dt0 = -1.5*V_alfa1 - sqrt3/2*V_beta1 + 1;
+    dt1 = 1.5*V_alfa1 - sqrt3/2*V_beta1;
+    dt2 = 1 - dt0 - dt1;
+    
+    if(sextant == 1 || sextant == 3 || sextant ==5 ){
+        t_COMP1 = .25*dt0+.5*dt2+.5*dt1;
+        t_COMP2 = .75*dt0 + dt2 + dt1;
+        t_COMP3 = .25*dt0+.5*dt2;
+        t_COMP4 = .75*dt0+dt2+5*dt1;
+        t_COMP5 = .25*dt0;
+        t_COMP6 = .75*dt0+.5*dt1+.5*dt2;
+    } else {  // sextant = [2,4,6]
+        t_COMP1 = .25*dt0 + .5*dt1;
+        t_COMP2 = .75*dt0+dt1+.5*dt2;
+        t_COMP3 = .25*dt0+.5*dt1+.5*dt2;
+        t_COMP4 = .75*dt0+dt1+dt2;
+        t_COMP5 = .25*dt0;
+        t_COMP6 = .75*dt0+.5*dt1+.5*dt2;
+    }
+} else if(sector == 8){ //Sector 8
+    dt1 = - sqrt3*V_beta1 + 1;
+    dt2 = -1.5*V_alfa1 + sqrt3/2*V_beta1 + 1;
+    dt8 = 1 - dt1 - dt2;
+    
+    if(sextant == 1 || sextant == 3 || sextant ==5 ){
+        t_COMP1 = .5*dt2 + .5*dt1 + dt8;
+        t_COMP2 = 1;
+        t_COMP3 = .5*dt2;
+        t_COMP4 = dt2+.5*dt1+dt8;
+        t_COMP5 = 0;
+        t_COMP6 = .5*dt2+.5*dt1;
+    } else {  // sextant = [2,4,6]
+        t_COMP1 = .5*dt1;
+        t_COMP2 = .5*dt1 + dt2 + dt8;
+        t_COMP3 = .5*dt1+dt2+dt8;
+        t_COMP4 = 1;
+        t_COMP5 = 0;
+        t_COMP6 = .5*dt1+.5*dt2;
+    }
+} else if(sector == 7){ //Sector 7
+    dt1 = -1.5*V_alfa1 - sqrt3/2*V_beta1 + 2;
+    dt7 =  1.5*V_alfa1 - sqrt3/2*V_beta1 - 1;
+    dt8 = 1 - dt1 - dt7;
+    
+    if(sextant == 1 || sextant == 3 || sextant ==5 ){
+        t_COMP1 = .5*dt1+dt8+dt7;
+        t_COMP2 = 1;
+        t_COMP3 = 0;
+        t_COMP4 = .5*dt1+dt8;
+        t_COMP5 = 0;
+        t_COMP6 = .5*dt1;
+    } else {  // sextant = [2,4,6]
+        t_COMP1 = .5*dt1+dt7;
+        t_COMP2 = 1;
+        t_COMP3 = .5*dt1+dt7+dt8;
+        t_COMP4 = 1;
+        t_COMP5 = 0;
+        t_COMP6 = .5*dt1;
+    }
+} else if(sector == 9){ //Sector 9    
+    dt2 = -1.5*V_alfa1 - sqrt3/2*V_beta1 + 2;
+    dt8 =  1.5*V_alfa1 - sqrt3/2*V_beta1;
+    dt9 = 1 - dt2 - dt8;
+    
+    if(sextant == 1 || sextant == 3 || sextant ==5 ){
+        t_COMP1 = .5*dt2 + dt9+dt8;
+        t_COMP2 = 1;
+        t_COMP3 = .5*dt2+dt9;
+        t_COMP4 = 1;
+        t_COMP5 = 0;
+        t_COMP6 = .5*dt2;
+    } else {  // sextant = [2,4,6]
+        t_COMP1 = 0;
+        t_COMP2 = .5*dt2+dt8;
+        t_COMP3 = .5*dt2+dt8+dt9;
+        t_COMP4 = 1;
+        t_COMP5 = 0;
+        t_COMP6 = .5*dt2;
+    }
+}
+
+if(sextant == 1 || sextant == 2){
+    COMP1 = t_COMP1;
+    COMP2 = t_COMP2;
+    COMP3 = t_COMP3;
+    COMP4 = t_COMP4;
+    COMP5 = t_COMP5;
+    COMP6 = t_COMP6;
+} else if(sextant == 3 || sextant == 4){
+    COMP1 = t_COMP5;
+    COMP2 = t_COMP6;
+    COMP3 = t_COMP1;
+    COMP4 = t_COMP2;
+    COMP5 = t_COMP3;
+    COMP6 = t_COMP4;
+} else { // Sextant 5 and 6
+    COMP1 = t_COMP3;
+    COMP2 = t_COMP4;
+    COMP3 = t_COMP5;
+    COMP4 = t_COMP6;
+    COMP5 = t_COMP1;
+    COMP6 = t_COMP2;
+}
+/*End code section*/"
+        }
+        [
+            position = 7840, 8472
+            size = 128, 288
+        ]
+
+        component gen_probe Probe6 {
+        }
+        [
+            position = 8056, 8720
+        ]
+
+        component src_sine Vb {
+            frequency = "60"
+            phase = "-120"
+        }
+        [
+            position = 7728, 8432
+        ]
+
+        component src_voltage Vs2 {
+            init_const_value = "25"
+        }
+        [
+            position = 8424, 8016
+            rotation = right
+        ]
+
+        component gen_probe Probe5 {
+        }
+        [
+            position = 8112, 8696
+        ]
+
+        component src_scada_input ma {
+            unit = ""
+        }
+        [
+            position = 7728, 8592
+        ]
+
+        component src_constant Constant2 {
+        }
+        [
+            position = 8640, 8304
+        ]
+
+        component "core/Grid Simulator" "Grid Simulator1" {
+            inductance_grid_simulator = "3e-3"
+        }
+        [
+            position = 8960, 8472
+            size = 120, 256
+        ]
+
+        component "core/NPC Leg" "NPC Leg3" {
+            ctrl_src = "Internal modulator"
+        }
+        [
+            position = 8704, 8904
+            size = 127, 256
+        ]
+
+        component gen_probe Sector {
+        }
+        [
+            position = 8240, 8632
+        ]
+
+        component src_constant Constant1 {
+        }
+        [
+            position = 8648, 7880
+        ]
+
+        component src_ground gnd1 {
+        }
+        [
+            position = 8480, 8104
+        ]
+
+        component src_sine Va {
+            frequency = "60"
+        }
+        [
+            position = 7728, 8352
+        ]
+
+        component gen_probe Probe3 {
+        }
+        [
+            position = 8144, 8568
+        ]
+
+        component "core/NPC Leg" "NPC Leg1" {
+            ctrl_src = "Internal modulator"
+        }
+        [
+            position = 8712, 8064
+            size = 127, 256
+        ]
+
+        tag From2 {
+            value = "vag2"
+            scope = global
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8664, 7816
+        ]
+
+        tag Goto4 {
+            value = "vbg1"
+            scope = global
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8256, 8368
+        ]
+
+        tag Goto6 {
+            value = "vcg1"
+            scope = global
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8256, 8464
+        ]
+
+        tag From3 {
+            value = "vbg2"
+            scope = global
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8640, 8264
+        ]
+
+        tag Goto1 {
+            value = "vag1"
+            scope = global
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8256, 8272
+        ]
+
+        tag From5 {
+            value = "vcg1"
+            scope = global
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8648, 8632
+        ]
+
+        tag Goto2 {
+            value = "vag2"
+            scope = global
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8256, 8320
+        ]
+
+        tag From4 {
+            value = "vbg1"
+            scope = global
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8640, 8224
+        ]
+
+        tag From1 {
+            value = "vag1"
+            scope = global
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8664, 7768
+        ]
+
+        tag From6 {
+            value = "vcg2"
+            scope = global
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8648, 8680
+        ]
+
+        tag Goto5 {
+            value = "vcg2"
+            scope = global
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8256, 8512
+        ]
+
+        tag Goto3 {
+            value = "vbg2"
+            scope = global
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8256, 8416
+        ]
+
+        junction Junction7 pe
+        [
+            position = 8584, 8376
+        ]
+
+        junction Junction12 pe
+        [
+            position = 8424, 8064
+        ]
+
+        junction Junction14 pe
+        [
+            position = 8480, 8064
+        ]
+
+        junction Junction6 pe
+        [
+            position = 8472, 8160
+        ]
+
+        junction Junction4 pe
+        [
+            position = 8584, 7968
+        ]
+
+        junction Junction9 pe
+        [
+            position = 8472, 8568
+        ]
+
+        junction Junction5 pe
+        [
+            position = 8536, 8064
+        ]
+
+        junction Junction8 pe
+        [
+            position = 8536, 8472
+        ]
+
+        connect From6 "NPC Leg3.In2" as Connection106
+        connect "C function1.R2_o" Probe9.in as Connection152
+        connect gnd1.node Junction14 as Connection168
+        connect Junction9 Junction6 as Connection90
+        [
+            breakpoints = 8472, 8488
+        ]
+        connect From2 "NPC Leg1.In2" as Connection102
+        connect "C function1.sector_o" Sector.in as Connection141
+        connect "NPC Leg3.DC-" Junction9 as Connection91
+        connect "NPC Leg3.OUT" "Grid Simulator1.Phase C" as Connection94
+        connect "NPC Leg1.DC-" Junction6 as Connection80
+        connect "NPC Leg2.OUT" "Grid Simulator1.Phase B" as Connection93
+        connect From5 "NPC Leg3.In1" as Connection107
+        connect "C function1.vag1" Goto1 as Connection139
+        connect "NPC Leg1.OUT" "Grid Simulator1.Phase A" as Connection92
+        connect Va.out "C function1.Va_ref" as Connection61
+        connect "C function1.Vb_ref" Vb.out as Connection62
+        connect "C function1.R1_o" Probe8.in as Connection151
+        connect "NPC Leg2.DCn" Junction8 as Connection86
+        connect From1 "NPC Leg1.In1" as Connection103
+        connect Constant3.out "NPC Leg3.En" as Connection60
+        connect "NPC Leg3.DCn" Junction8 as Connection88
+        connect "NPC Leg2.DC-" Junction9 as Connection89
+        connect "C function1.V_beta_o" Probe4.in as Connection143
+        connect ma.out "C function1.ma" as Connection169
+        connect "C function1.R3_o" Probe10.in as Connection153
+        connect Constant1.out "NPC Leg1.En" as Connection58
+        connect "C function1.V_beta1_o" Probe6.in as Connection145
+        connect "C function1.vcg1" Goto6 as Connection100
+        connect Junction8 Junction5 as Connection87
+        [
+            breakpoints = 8536, 8464
+        ]
+        connect Junction5 Junction14 as Connection166
+        connect "C function1.vbg1" Goto4 as Connection136
+        connect "NPC Leg2.DC+" Junction7 as Connection83
+        connect "C function1.sextant_o" Sextant.in as Connection95
+        connect "C function1.V_alfa1_o" Probe5.in as Connection144
+        connect Junction7 Junction4 as Connection84
+        [
+            breakpoints = 8584, 8360
+        ]
+        connect "C function1.theta_o" Probe7.in as Connection150
+        connect From4 "NPC Leg2.In1" as Connection104
+        connect "C function1.V_alfa_o" Probe3.in as Connection142
+        connect "NPC Leg1.DCn" Junction5 as Connection77
+        connect "C function1.vag2" Goto2 as Connection140
+        connect Vc.out "C function1.Vc_ref" as Connection63
+        connect Constant2.out "NPC Leg2.En" as Connection59
+        connect "NPC Leg1.DC+" Junction4 as Connection74
+        connect "NPC Leg3.DC+" Junction7 as Connection85
+        connect "C function1.vcg2" Goto5 as Connection101
+        connect "C function1.vbg2" Goto3 as Connection137
+        connect Vs2.n_node Junction12 as Connection160
+        connect From3 "NPC Leg2.In2" as Connection105
+        connect Vs3.p_node Junction12 as Connection162
+        connect Vs3.n_node Junction6 as Connection171
+        [
+            breakpoints = 8424, 8160
+        ]
+        connect Junction14 Junction12 as Connection172
+        [
+            breakpoints = 8480, 8064; 8424, 8064
+        ]
+        connect Junction4 Vs2.p_node as Connection170
+        [
+            breakpoints = 8584, 7968; 8424, 7968
+        ]
+    }
+
+    default {
+        gen_c_function {
+            in_terminal_properties = "real in;"
+            in_terminal_labels = ""
+            out_terminal_properties = "real out;"
+            out_terminal_labels = ""
+            no_feed_inputs = ""
+            no_feed_outputs = ""
+            in_terminal_dimensions = ""
+            in_terminal_dimensions_str = ""
+            out_terminal_dimensions = ""
+            out_terminal_dimensions_str = ""
+            output_fnc = ""
+            update_fnc = ""
+            init_fnc = ""
+            global_variables = ""
+            parameters = ""
+            execution_rate = "inherit"
+        }
+
+        gen_probe {
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        src_constant {
+            value = "1"
+            signal_type = "real"
+            execution_rate = "100e-6"
+        }
+
+        src_scada_input {
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
+        src_sine {
+            amplitude = "1"
+            dc_offset = "0"
+            frequency = "50"
+            phase = "0"
+            execution_rate = "100e-6"
+        }
+
+        src_voltage {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "core/NPC Leg" {
+            ctrl_src = "Digital input per switch"
+            op_mode = "Fixed carrier frequency"
+            carrier_freq = "10000.0"
+            carr_ph_offset = "0.0"
+            d_time = "5e-6"
+            ref_sig_min_max = "[0, 1.0]"
+            execution_rate = "inherit"
+            S1 = "1"
+            S1_logic = "active high"
+            S2 = "2"
+            S2_logic = "active high"
+            S3 = "3"
+            S3_logic = "active high"
+            S4 = "4"
+            S4_logic = "active high"
+            control_property = "all high"
+            pwm_enabling = "False"
+            pwm_enable_di = "13"
+            pwm_enable_inv = "active high"
+            dtv_flag_en = "True"
+            delay_enabled = "False"
+            fixed_delay = "1e-6"
+            var_delay_lut = "[-10.0, 1e-6, 10.0, 1e-6]"
+            preview_var_delay = "Preview"
+            PESB_Optimization = "True"
+            show_monitoring = "false"
+            losses_estimation = "False"
+            Import_igbt_xml_g1 = "not selected"
+            Import_diode_xml_g1 = "not selected"
+            Import_igbt_xml_g2 = "not selected"
+            Import_diode_xml_g2 = "not selected"
+            Import_diode_xml_g3 = "not selected"
+            losses_groups = "Group1"
+            Vce_g1 = "1.3"
+            Rce_g1 = "0"
+            Vd_g1 = "1.2"
+            Rd_g1 = "0"
+            i_sw_g1 = "[0.0, 6.0, 12.0, 18.0, 24.0]"
+            v_sw_g1 = "[0.0, 600.0]"
+            temp_sw_g1 = "[25.0, 50.0, 75.0, 100.0, 125.0]"
+            et_on_table_out_g1 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*3.8e-3, 0.4*3.8e-3, 0.8*3.8e-3, 0.68*3.8e-3, 0.9*3.8e-3], [0.65*3.8e-3, 0.9*3.8e-3, 1.2*3.8e-3, 1.5*3.8e-3, 1.7*3.8e-3], [0.9*3.8e-3, 1.3*3.8e-3, 1.7*3.8e-3, 1.9*3.8e-3, 2.25*3.8e-3], [1.1*3.8e-3, 1.7*3.8e-3, 2.1*3.8e-3, 2.3*3.8e-3, 2.5*3.8e-3]]"
+            et_off_table_out_g1 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.1e-3, 0.4*2.1e-3, 0.8*2.1e-3, 0.68*2.1e-3, 0.9*2.1e-3], [0.65*2.1e-3, 0.9*2.1e-3, 1.2*2.1e-3, 1.5*2.1e-3, 1.7*2.1e-3], [0.9*2.1e-3, 1.3*2.1e-3, 1.7*2.1e-3, 1.9*2.1e-3, 2.25*2.1e-3], [1.1*2.1e-3, 1.7*2.1e-3, 2.1*2.1e-3, 2.3*2.1e-3, 2.5*2.1e-3]]"
+            ed_off_table_out_g1 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.2e-3, 0.4*2.2e-3, 0.8*2.2e-3, 0.68*2.2e-3, 0.9*2.2e-3], [0.65*2.2e-3, 0.9*2.2e-3, 1.2*2.2e-3, 1.5*2.2e-3, 1.7*2.2e-3], [0.9*2.2e-3, 1.3*2.2e-3, 1.7*2.2e-3, 1.9*2.2e-3, 2.25*2.2e-3], [1.1*2.2e-3, 1.7*2.2e-3, 2.1*2.2e-3, 2.3*2.2e-3, 2.5*2.2e-3]]"
+            Vce_g2 = "1.3"
+            Rce_g2 = "0"
+            Vd_g2 = "1.2"
+            Rd_g2 = "0"
+            i_sw_g2 = "[0.0, 6.0, 12.0, 18.0, 24.0]"
+            v_sw_g2 = "[0.0, 600.0]"
+            temp_sw_g2 = "[25.0, 50.0, 75.0, 100.0, 125.0]"
+            et_on_table_out_g2 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*3.8e-3, 0.4*3.8e-3, 0.8*3.8e-3, 0.68*3.8e-3, 0.9*3.8e-3], [0.65*3.8e-3, 0.9*3.8e-3, 1.2*3.8e-3, 1.5*3.8e-3, 1.7*3.8e-3], [0.9*3.8e-3, 1.3*3.8e-3, 1.7*3.8e-3, 1.9*3.8e-3, 2.25*3.8e-3], [1.1*3.8e-3, 1.7*3.8e-3, 2.1*3.8e-3, 2.3*3.8e-3, 2.5*3.8e-3]]"
+            et_off_table_out_g2 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.1e-3, 0.4*2.1e-3, 0.8*2.1e-3, 0.68*2.1e-3, 0.9*2.1e-3], [0.65*2.1e-3, 0.9*2.1e-3, 1.2*2.1e-3, 1.5*2.1e-3, 1.7*2.1e-3], [0.9*2.1e-3, 1.3*2.1e-3, 1.7*2.1e-3, 1.9*2.1e-3, 2.25*2.1e-3], [1.1*2.1e-3, 1.7*2.1e-3, 2.1*2.1e-3, 2.3*2.1e-3, 2.5*2.1e-3]]"
+            ed_off_table_out_g2 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.2e-3, 0.4*2.2e-3, 0.8*2.2e-3, 0.68*2.2e-3, 0.9*2.2e-3], [0.65*2.2e-3, 0.9*2.2e-3, 1.2*2.2e-3, 1.5*2.2e-3, 1.7*2.2e-3], [0.9*2.2e-3, 1.3*2.2e-3, 1.7*2.2e-3, 1.9*2.2e-3, 2.25*2.2e-3], [1.1*2.2e-3, 1.7*2.2e-3, 2.1*2.2e-3, 2.3*2.2e-3, 2.5*2.2e-3]]"
+            Vd_g3 = "1.2"
+            Rd_g3 = "0"
+            i_sw_g3 = "[0.0, 6.0, 12.0, 18.0, 24.0]"
+            v_sw_g3 = "[0.0, 600.0]"
+            temp_sw_g3 = "[25.0, 50.0, 75.0, 100.0, 125.0]"
+            ed_off_table_out_g3 = "[[0.0, 0.0275e-3, 0.15e-3, 0.275e-3, 0.3e-3], [0.35*2.2e-3, 0.4*2.2e-3, 0.8*2.2e-3, 0.68*2.2e-3, 0.9*2.2e-3], [0.65*2.2e-3, 0.9*2.2e-3, 1.2*2.2e-3, 1.5*2.2e-3, 1.7*2.2e-3], [0.9*2.2e-3, 1.3*2.2e-3, 1.7*2.2e-3, 1.9*2.2e-3, 2.25*2.2e-3], [1.1*2.2e-3, 1.7*2.2e-3, 2.1*2.2e-3, 2.3*2.2e-3, 2.5*2.2e-3]]"
+            loss_exec_rate = "100e-6"
+        }
+
+        "core/Grid Simulator" {
+            resistance_grid_simulator = "1.0"
+            inductance_grid_simulator = "1e-3"
+        }
+    }
+}
